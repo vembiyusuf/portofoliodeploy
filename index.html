@@ -903,13 +903,14 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Cek apakah sudah pernah mengizinkan sebelumnya
         if (localStorage.getItem("locationAllowed") === "true") {
           grantAccess();
         } else {
-          // Tampilkan blocker dan sembunyikan konten
-          document.getElementById("blocker").style.display = "flex";
-          document.getElementById("website-content").style.display = "none";
+          // Tunda 2 detik sebelum menampilkan blocker
+          setTimeout(() => {
+            document.getElementById("blocker").style.display = "flex";
+            document.getElementById("website-content").style.display = "none";
+          }, 2000); // 2 detik = 2000 ms
         }
       });
 
