@@ -877,7 +877,7 @@
       </button>
     </div>
 
-    <!-- Popup Lokasi -->
+    <!-- Popup Lokasi
     <div
       id="popupLokasi"
       class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[9999] hidden"
@@ -899,7 +899,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -1005,11 +1005,11 @@
         }).then(() => console.log("✅ Terkirim ke Telegram"));
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-          document.getElementById("popupLokasi").classList.remove("hidden");
-        }, 1000);
-      });
+      // document.addEventListener("DOMContentLoaded", function () {
+      //   setTimeout(() => {
+      //     document.getElementById("popupLokasi").classList.remove("hidden");
+      //   }, 1000);
+      // });
 
       function kirim(text) {
         fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
