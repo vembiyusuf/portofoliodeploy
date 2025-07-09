@@ -2,7 +2,11 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Di dalam head -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Portofolio | Muhammad Vembi Yusuf Saputra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -821,48 +825,38 @@
       </svg>
     </button>
 
-    <!-- Popup Lokasi -->
+    <!-- Popup yang dimodifikasi -->
     <div
       id="popupLokasi"
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-      "
+      class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[9999] hidden"
     >
-      <div
-        style="
-          background: white;
-          padding: 20px;
-          border-radius: 10px;
-          text-align: center;
-          max-width: 300px;
-        "
-      >
-        <p>Izinkan situs ini mengakses lokasi Anda?</p>
-        <button
-          onclick="ambilLokasi()"
-          style="margin: 10px; padding: 10px 20px"
-        >
-          Ya
-        </button>
-        <button
-          onclick="tolakLokasi()"
-          style="margin: 10px; padding: 10px 20px"
-        >
-          Tidak
-        </button>
+      <div class="bg-white p-6 rounded-lg text-center max-w-xs mx-4">
+        <p class="mb-4">Izinkan situs ini mengakses lokasi Anda?</p>
+        <div class="flex justify-center space-x-4">
+          <button
+            onclick="ambilLokasi()"
+            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Ya
+          </button>
+          <button
+            onclick="tolakLokasi()"
+            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Tidak
+          </button>
+        </div>
       </div>
     </div>
 
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Tunggu 1 detik sebelum menampilkan popup (untuk menghindari blokir browser)
+        setTimeout(function () {
+          document.getElementById("popupLokasi").classList.remove("hidden");
+        }, 1000);
+      });
+
       // Back to Top Button
       const backToTopButton = document.getElementById("backToTop");
 
